@@ -1,0 +1,202 @@
+:root {
+  --wall: #e8dcc8;
+  --ink: #2f4a36;
+  --ink-soft: #496049;
+  --pen: #2e6b45;
+  --paper: #fffbf0;
+  --paper-ink: #1f2b22;
+  --tape: #f4ebcf;
+  --trim: #f6f1e7;
+  --oak: #c49a6c;
+  --accent: #b5553a;
+  --shadow: 47, 40, 28;
+
+  --display: 'Instrument Serif', Georgia, serif;
+  /* serif for names and headlines, sans for everything small */
+  --text: 'Instrument Sans', system-ui, sans-serif;
+
+  --lp: 156px;
+  --fact-line: 32px;
+  --single: 108px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--wall);
+  -webkit-font-smoothing: antialiased;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fact-in {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* ---------- room ---------- */
+
+.room {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--wall);
+  color: var(--ink);
+  font-family: var(--display);
+}
+
+.grain {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.grain--wall {
+  opacity: 0.5;
+}
+
+.room__row {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 48px;
+  padding: 0 4%;
+}
+
+.baseboard,
+.floor {
+  position: relative;
+}
+
+/* thin dark-wood skirting where the wall meets the floor */
+.baseboard {
+  height: 6px;
+  background: #573a25;
+}
+
+/* the floor doubles as the footer: the contact line sits on the oak */
+.floor {
+  min-height: 56px;
+  margin: 0;
+  padding: 0 max(4%, calc((100% - 1440px) / 2 + 58px));
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  /* darker walnut floor so the cream text reads clearly (about 7:1) */
+  background: #6e4a30;
+  color: var(--trim);
+}
+
+/* Fit-to-screen (desktop): App scales the whole room to fill the window exactly,
+   so nothing scrolls. The JS sets width/height/transform; this just switches off
+   the normal page flow. */
+html.fit,
+html.fit body {
+  height: 100%;
+  overflow: hidden;
+}
+
+.room.is-fit {
+  min-height: 0;
+  transform-origin: 0 0;
+}
+
+/* the furniture and records keep their design width, centred. If the window
+   is taller than the design, the name stays at the top, the sofa stays on the
+   floor, and the records sit centred in the wall space between. */
+.room.is-fit .room__row {
+  flex: 1 0 auto;
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 58px;
+}
+
+/* wide: the records line up with the name at the top, leaving floor space for
+   the plant. tall: they sit centred in the wall. */
+.room.is-fit.is-tall .wall {
+  justify-content: center;
+}
+
+/* wide: the liner notes stand beside the records, so the title lines up with
+   the liner's right edge (grid + gap + liner) */
+.room.is-fit:not(.is-tall) .wall__title {
+  width: calc(var(--lp) * 3 + 56px + 24px + 280px);
+  text-align: right;
+}
+
+/* tall design: the same room in a narrower frame, with the liner notes as a
+   wide card under the records */
+.room.is-fit.is-tall .room__row {
+  max-width: 1180px;
+  flex-wrap: nowrap;
+}
+
+.room.is-fit.is-tall .wall__body {
+  flex-direction: column;
+  align-items: center;
+}
+
+.room.is-fit.is-tall .liner {
+  flex: none;
+  width: calc(var(--lp) * 3 + 56px);
+  min-width: 0;
+}
+
+/* ---------- intro ---------- */
+
+.intro {
+  flex: 1 1 440px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  padding-top: 48px;
+}
+
+.intro__header {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.intro h1 {
+  margin: 0;
+  font-size: 72px;
+  line-height: 0.95;
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: -0.01em;
+}
+
+/* serif for who I am (name + subtitle), sans for the playful fun facts */
+.intro__degree {
+  margin: 0;
+  max-width: 400px;
+  font-family: var(--display);
+  font-size: 23px;
+  line-height: 1.3;
+  color: var(--ink-soft);
+}
+
