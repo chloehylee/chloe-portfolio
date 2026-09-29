@@ -510,3 +510,265 @@ html.fit body {
   margin-bottom: -62px;
 }
 
+/* ---------- record wall ---------- */
+
+.wall {
+  flex: 999 1 560px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  padding: 48px 0 32px;
+}
+
+.wall__title {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.1;
+  color: var(--pen);
+}
+
+/* records on the left, liner notes beside them (they wrap below on narrow screens) */
+.wall__body {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: stretch;
+  gap: 24px;
+  width: 100%;
+}
+
+/* a tidy 3 x 3 grid: every slot is 12-inch sized, so rows and columns line up;
+   the smaller 7-inch singles sit centred in their slot */
+.wall__grid {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, var(--lp));
+  grid-auto-rows: var(--lp);
+  gap: 28px;
+}
+
+.wall__grid > li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sleeve {
+  --size: var(--lp);
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: var(--size);
+  height: var(--size);
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.sleeve--single {
+  --size: var(--single);
+}
+
+.sleeve--single .vinyl__label {
+  inset: 30%;
+}
+
+.sleeve.is-active {
+  z-index: 3;
+}
+
+.sleeve:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 4px;
+}
+
+.sleeve__disc {
+  position: absolute;
+  inset: 3%;
+  display: block;
+  /* the pulled-out record sits over its neighbour; don't let it steal hovers */
+  pointer-events: none;
+  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.sleeve.is-active .sleeve__disc {
+  transform: translateX(48%);
+}
+
+.vinyl {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: repeating-radial-gradient(circle at center, #1c1517 0 2px, #2b2224 2px 4px);
+  animation: spin 2.4s linear infinite;
+  animation-play-state: paused;
+}
+
+.sleeve.is-active .vinyl {
+  animation-play-state: running;
+}
+
+.vinyl__label {
+  position: absolute;
+  inset: 34%;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+/* small dot so you can see the record turn */
+.vinyl__label::after {
+  content: '';
+  position: absolute;
+  left: 18%;
+  top: 18%;
+  width: 20%;
+  height: 20%;
+  border-radius: 50%;
+  background: var(--paper);
+}
+
+.sleeve__face {
+  position: absolute;
+  inset: 0;
+  display: block;
+  background: var(--sleeve-color);
+  box-shadow:
+    0 2px 4px rgba(var(--shadow), 0.12),
+    0 14px 30px rgba(var(--shadow), 0.16);
+  transition: transform 0.25s ease;
+}
+
+.sleeve:hover .sleeve__face {
+  transform: translateY(-2px);
+}
+
+/* Covers sit faded into the wall until you hover, focus or pick one */
+.sleeve__cover {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* --calm (0 to 1, per cover) quiets the loud ones a little more */
+  filter: sepia(calc(0.35 + var(--calm, 0) * 0.15)) saturate(calc(0.6 - var(--calm, 0) * 0.28))
+    contrast(calc(0.92 - var(--calm, 0) * 0.1)) brightness(calc(1.04 + var(--calm, 0) * 0.16));
+  transition: filter 0.35s ease;
+}
+
+/* paper grain over the cover; it stays on hover, like ink on card stock */
+.sleeve__grain {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' seed='7'/><feColorMatrix values='0 0 0 0 0.38  0 0 0 0 0.31  0 0 0 0 0.21  0 0 0 0.7 -0.18'/></filter><rect width='100%' height='100%' filter='url(%23g)'/></svg>");
+  background-size: 160px 160px;
+  mix-blend-mode: multiply;
+  opacity: 0.55;
+}
+
+.sleeve__face::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: var(--wall);
+  opacity: calc(0.32 + var(--calm, 0) * 0.14);
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+
+.sleeve:hover .sleeve__cover,
+.sleeve:focus-visible .sleeve__cover,
+.sleeve.is-active .sleeve__cover {
+  filter: none;
+}
+
+.sleeve:hover .sleeve__face::after,
+.sleeve:focus-visible .sleeve__face::after,
+.sleeve.is-active .sleeve__face::after {
+  opacity: 0;
+}
+
+.sleeve__ring {
+  position: absolute;
+  inset: 9%;
+  border: 2px solid rgba(255, 255, 255, 0.22);
+  border-radius: 50%;
+}
+
+.sleeve__tape {
+  position: absolute;
+  left: -8px;
+  bottom: 16px;
+  padding: 5px 10px;
+  background: var(--tape);
+  color: var(--ink);
+  font-family: var(--text);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.1;
+  white-space: nowrap;
+  box-shadow: 0 1px 2px rgba(var(--shadow), 0.2);
+  transform: rotate(-2deg);
+}
+
+.wall__grid li:nth-child(3n + 2) .sleeve__tape {
+  transform: rotate(2deg);
+}
+
+.wall__grid li:nth-child(3n) .sleeve__tape {
+  transform: rotate(-3deg);
+}
+
+/* a plant on the floor under the left of the record grid (grid + gap + liner
+   is 828px wide), clear of the contact line on the right. Only in the
+   wide layout, where there's wall to fill under the records. */
+.plant {
+  display: none;
+}
+
+.room.is-fit:not(.is-tall) .wall {
+  position: relative;
+}
+
+/* the plant sways while you hover it */
+.plant__leaves {
+  transform-box: view-box;
+  transform-origin: 75px 124px;
+}
+
+.plant:hover .plant__leaves {
+  animation: sway 1.6s ease-in-out infinite;
+}
+
+@keyframes sway {
+  25% {
+    transform: rotate(-4deg);
+  }
+  75% {
+    transform: rotate(3deg);
+  }
+}
+
+.room.is-fit:not(.is-tall) .plant {
+  display: block;
+  position: absolute;
+  z-index: 2;
+  left: calc(50% - 414px + 12px);
+  bottom: -62px;
+  width: 150px;
+  height: 200px;
+}
+
