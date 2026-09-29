@@ -772,3 +772,225 @@ html.fit body {
   height: 200px;
 }
 
+/* ---------- liner notes: the back of the sleeve ---------- */
+
+.liner {
+  position: relative;
+  z-index: 5;
+  flex: 0 1 280px;
+  min-width: 260px;
+  padding: 18px;
+  background: var(--paper);
+  color: var(--paper-ink);
+  box-shadow:
+    0 2px 6px rgba(var(--shadow), 0.1),
+    0 18px 38px rgba(var(--shadow), 0.14);
+}
+
+/* a thin spine down the right edge in the colour of the album you're on */
+.liner::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 6px;
+  background: var(--album, transparent);
+  transition: background-color 0.35s ease;
+}
+
+.grain--paper {
+  opacity: 0.55;
+}
+
+.liner__inner {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+@keyframes liner-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.liner p,
+.liner h3,
+.liner ol {
+  margin: 0;
+}
+
+.liner__top {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.liner__thumb {
+  display: block;
+  flex: none;
+  width: 96px;
+  height: 96px;
+  object-fit: cover;
+  box-shadow: 0 1px 3px rgba(var(--shadow), 0.25);
+}
+
+.liner__labels {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.liner__cat {
+  font-family: var(--text);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  line-height: 1.4;
+  color: var(--ink-soft);
+}
+
+.liner__meta {
+  font-family: var(--text);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  line-height: 1.4;
+  color: var(--pen);
+}
+
+.liner__title {
+  font-size: 34px;
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.05;
+}
+
+/* the role can wrap, so it fades in rather than morphing */
+.liner__role {
+  animation: track-in 0.35s ease;
+  font-family: var(--text);
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--ink-soft);
+}
+
+.liner__tracks {
+  margin-top: 8px !important;
+  padding: 10px 0 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-top: 1px solid rgba(47, 74, 54, 0.18);
+}
+
+.track {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  font-family: var(--text);
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.track__no {
+  flex: none;
+  width: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--pen);
+}
+
+/* track lines wrap, so instead of morphing they just fade in */
+.track__title {
+  min-width: 0;
+  animation: track-in 0.35s ease;
+}
+
+@keyframes track-in {
+  from {
+    opacity: 0;
+  }
+}
+
+/* "inspired by" as a small label, then the album and artist stacked under it,
+   all on one left edge */
+.liner__album {
+  margin-top: auto !important;
+  padding-top: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.liner__album-label {
+  font-family: var(--text);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  line-height: 1.4;
+  color: var(--ink-soft);
+}
+
+.liner__album-title {
+  font-family: var(--display);
+  font-size: 19px;
+  font-style: italic;
+  line-height: 1.15;
+  color: var(--paper-ink);
+}
+
+.liner__album-artist {
+  font-family: var(--text);
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--ink-soft);
+}
+
+/* liner notes as a wide card: cover and catalogue on the left, the rest on
+   the right. Used whenever the notes sit under the records. */
+.room.is-tall .liner__inner,
+.room:not(.is-fit) .liner__inner {
+  display: grid;
+  grid-template-columns: 112px minmax(0, 1fr);
+  column-gap: 22px;
+  row-gap: 6px;
+  align-content: start;
+}
+
+.room.is-tall .liner__inner > *,
+.room:not(.is-fit) .liner__inner > * {
+  grid-column: 2;
+}
+
+.room.is-tall .liner__top,
+.room:not(.is-fit) .liner__top {
+  grid-column: 1;
+  grid-row: 1 / span 5;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 0;
+}
+
+.room.is-tall .liner__thumb,
+.room:not(.is-fit) .liner__thumb {
+  width: 112px;
+  height: 112px;
+}
+
+.room.is-tall .liner__album,
+.room:not(.is-fit) .liner__album {
+  margin-top: 0 !important;
+  padding-top: 8px;
+}
+
