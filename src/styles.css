@@ -200,6 +200,119 @@ html.fit body {
   color: var(--ink-soft);
 }
 
+/* ---------- fun fact ---------- */
+
+/* The whole pill is one button: click it and the reel of facts spins up and down */
+.fact {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  max-width: 440px;
+  padding: 6px 6px 6px 16px;
+  border: 1px solid rgba(47, 74, 54, 0.22);
+  border-radius: 14px;
+  background: rgba(255, 251, 240, 0.45);
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.fact:hover {
+  background: rgba(255, 251, 240, 0.8);
+}
+
+.fact:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 3px;
+}
+
+.fact__label {
+  flex: none;
+  font-family: var(--text);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--pen);
+}
+
+/* one line tall */
+.fact__window {
+  flex: 1;
+  min-width: 0;
+  height: var(--fact-line);
+  overflow: hidden;
+}
+
+/* while spinning, the top and bottom edges fade so facts roll past softly */
+.fact.is-spinning .fact__window {
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 25%, #000 75%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, #000 25%, #000 75%, transparent);
+}
+
+.fact__reel {
+  display: flex;
+  flex-direction: column;
+  will-change: transform;
+}
+
+.fact__item {
+  flex: none;
+  height: var(--fact-line);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: left;
+  font-family: var(--text);
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 32px;
+  color: var(--ink);
+}
+
+.fact__dial {
+  flex: none;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: var(--ink);
+  color: var(--trim);
+  transition: background-color 0.2s ease;
+}
+
+.fact:hover .fact__dial {
+  background: var(--pen);
+}
+
+/* the button gives a little wind-up turn on hover, before you spin */
+.fact__dial {
+  transition:
+    background-color 0.2s ease,
+    transform 0.45s cubic-bezier(0.3, 1.6, 0.5, 1);
+}
+
+.fact:not(.is-spinning):hover .fact__dial {
+  transform: rotate(-35deg);
+}
+
+.fact__dial svg {
+  transition: transform 1.4s cubic-bezier(0.12, 0.8, 0.2, 1);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
 /* ---------- scene: tv, table, loveseat ---------- */
 
 .scene {
