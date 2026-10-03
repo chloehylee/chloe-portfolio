@@ -1107,3 +1107,131 @@ html.fit body {
   padding-top: 8px;
 }
 
+/* ---------- contact line on the floor ---------- */
+
+.floor p {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 19px;
+  line-height: 1.4;
+}
+
+/* "say hi": italic and underlined; hover or tap opens a small menu above it */
+.reach {
+  position: relative;
+  display: inline-block;
+}
+
+.reach__trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-style: italic;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+/* the underline is a border so it stretches with the morphing text */
+.reach__trigger > :first-child {
+  padding-bottom: 1px;
+  border-bottom: 1px solid currentColor;
+}
+
+.reach.is-open .reach__trigger,
+.reach__trigger:hover {
+  color: #f2d49b;
+}
+
+.reach__trigger svg {
+  transition: transform 0.25s ease;
+}
+
+/* the arrow turns to point up at the menu */
+.reach.is-open .reach__trigger svg {
+  transform: rotate(-90deg);
+}
+
+.reach__trigger:focus-visible {
+  outline: 2px solid var(--trim);
+  outline-offset: 3px;
+}
+
+.reach__menu {
+  position: absolute;
+  z-index: 10;
+  right: -6px;
+  bottom: calc(100% + 10px);
+  min-width: 220px;
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  background: var(--paper);
+  color: var(--paper-ink);
+  border-radius: 10px;
+  box-shadow:
+    0 2px 6px rgba(var(--shadow), 0.14),
+    0 16px 32px rgba(var(--shadow), 0.22);
+  font-family: var(--text);
+  font-style: normal;
+  text-align: left;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(6px) scale(0.97);
+  transform-origin: bottom right;
+  transition:
+    opacity 0.18s ease,
+    transform 0.22s cubic-bezier(0.3, 1.3, 0.5, 1),
+    visibility 0s linear 0.22s;
+}
+
+.reach.is-open .reach__menu {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition:
+    opacity 0.18s ease,
+    transform 0.22s cubic-bezier(0.3, 1.3, 0.5, 1),
+    visibility 0s;
+}
+
+/* an invisible bridge so the mouse can travel from the link up to the menu */
+.reach__menu::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  height: 12px;
+}
+
+.reach__menu a {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  color: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.3;
+  text-decoration: none;
+}
+
+.reach__menu a:hover,
+.reach__menu a:focus-visible {
+  background: rgba(47, 74, 54, 0.1);
+  color: var(--pen);
+  outline: none;
+}
+
+.reach__hint {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--ink-soft);
+}
+
