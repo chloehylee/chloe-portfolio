@@ -1370,3 +1370,168 @@ html.fit body {
   color: var(--ink-soft);
 }
 
+/* ---------- small screens ---------- */
+
+/* Stacked layout: whenever the full room isn't shown scaled (portrait or small
+   windows), everything goes into one tidy centred column that scrolls. */
+.room:not(.is-fit) .room__row {
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+}
+
+.room:not(.is-fit) .intro {
+  flex: none;
+  width: 100%;
+}
+
+.room:not(.is-fit) .wall {
+  flex: none;
+  width: 100%;
+}
+
+.room:not(.is-fit) .intro {
+  align-items: center;
+}
+
+.room:not(.is-fit) .intro__header,
+.room:not(.is-fit) .scene {
+  width: 100%;
+  max-width: calc(var(--lp) * 3 + 56px);
+}
+
+.room:not(.is-fit) .loveseat {
+  margin-bottom: 0;
+}
+
+.room:not(.is-fit) .floor {
+  justify-content: center;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: center;
+}
+
+.room:not(.is-fit) .wall {
+  padding-top: 24px;
+}
+
+/* liner notes sit under the records at exactly the grid's width */
+.room:not(.is-fit) .wall__body {
+  flex-direction: column;
+  align-items: center;
+}
+
+.room:not(.is-fit) .liner {
+  flex: none;
+  width: 100%;
+  max-width: calc(var(--lp) * 3 + 56px);
+  min-width: 0;
+}
+
+@media (max-width: 560px) {
+  :root {
+    --lp: 148px;
+    --single: 104px;
+  }
+
+  .intro h1 {
+    font-size: 56px;
+  }
+
+  .intro__degree {
+    font-size: 20px;
+  }
+
+  /* phones: let a long fact wrap onto two lines instead of getting cut off */
+  :root {
+    --fact-line: 44px;
+  }
+
+  .fact__item {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    white-space: normal;
+    font-size: 14px;
+    line-height: 19px;
+  }
+
+  /* on phones the grid shrinks to the screen width */
+  .wall__grid {
+    width: 100%;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-auto-rows: auto;
+    gap: 14px;
+  }
+
+  .wall__grid > li {
+    aspect-ratio: 1;
+  }
+
+  .sleeve {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+  }
+
+  /* singles stay about two thirds the size of an LP */
+  .sleeve--single {
+    width: 69%;
+  }
+
+  .tv__title {
+    font-size: 22px;
+  }
+
+  .tv__time {
+    font-size: 22px;
+  }
+
+  .liner__title {
+    font-size: 28px;
+  }
+
+  .room:not(.is-fit) .liner__inner {
+    grid-template-columns: 84px minmax(0, 1fr);
+    column-gap: 16px;
+  }
+
+  .room:not(.is-fit) .liner__thumb {
+    width: 84px;
+    height: 84px;
+  }
+
+  .floor p {
+    font-size: 17px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* stacked (phones): the living room's two signs sit side by side at the end,
+   my room on the left and the studio on the right, like the house */
+.room:not(.is-fit) .room__row.living {
+  padding-bottom: 76px;
+}
+
+.room:not(.is-fit) .living .room-sign {
+  position: absolute;
+  bottom: 24px;
+  margin: 0;
+}
+
+.room:not(.is-fit) .living .room-sign--left {
+  left: 16px;
+}
+
+.room:not(.is-fit) .living .room-sign--right {
+  right: 16px;
+}
+
