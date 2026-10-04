@@ -200,6 +200,141 @@ html.fit body {
   color: var(--ink-soft);
 }
 
+/* ---------- subtitle phrases: each turns into a little picture of itself ---------- */
+
+.phrase {
+  position: relative;
+  display: inline-block;
+  white-space: nowrap;
+  cursor: default;
+}
+
+/* the words keep their space (and stay readable to screen readers), just faded out */
+.phrase__text {
+  transition: opacity 0.15s ease;
+}
+
+/* "Software Engineer." leads the line: darker, and a touch heavier (Instrument
+   Serif only comes in one weight, so a hairline stroke thickens it) */
+.phrase__text--strong {
+  color: var(--ink);
+  -webkit-text-stroke: 0.45px currentColor;
+}
+
+.phrase.is-on .phrase__text {
+  opacity: 0;
+}
+
+.phrase__fx {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  pointer-events: none;
+  color: var(--pen);
+  font-style: normal;
+}
+
+/* Software Engineer: ASCII scramble -> terminal command */
+.fx-ascii,
+.fx-coords {
+  font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  line-height: 1;
+  letter-spacing: 0;
+  white-space: pre;
+}
+
+.fx-ascii__cursor {
+  margin-left: 1px;
+  opacity: 0.8;
+}
+
+.fx-ascii__cursor.is-blinking {
+  animation: colon 1s steps(1) infinite;
+}
+
+/* Computer Science: contribution grid */
+.fx-grid {
+  display: grid;
+}
+
+.fx-grid__cell {
+  display: block;
+  border-radius: 1.5px;
+  transition: background-color 0.4s ease;
+  animation: cell-in 0.3s ease backwards;
+}
+
+@keyframes cell-in {
+  from {
+    transform: scale(0.2);
+    opacity: 0;
+  }
+}
+
+/* Cognitive Science: an agent thinking */
+.fx-think {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  font-family: var(--text);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.fx-think__spin {
+  flex: none;
+  width: 14px;
+  text-align: center;
+  color: #c96a3f;
+}
+
+/* a light sweeps across the word, like a model working */
+.fx-think__word {
+  flex: none;
+  background: linear-gradient(90deg, var(--ink-soft) 0%, var(--ink-soft) 40%, #e8dcc8 50%, var(--ink-soft) 60%, var(--ink-soft) 100%);
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 1.6s linear infinite;
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: -150% 0;
+  }
+}
+
+/* the bar fills the rest of the space, slowing as it goes, never quite done */
+.fx-think__bar {
+  flex: 1;
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(47, 74, 54, 0.14);
+  overflow: hidden;
+}
+
+.fx-think__bar span {
+  display: block;
+  height: 100%;
+  width: 0;
+  border-radius: 2px;
+  background: var(--pen);
+  animation: think-load 6s cubic-bezier(0.1, 0.7, 0.2, 1) forwards;
+}
+
+@keyframes think-load {
+  to {
+    width: 92%;
+  }
+}
+
 /* ---------- fun fact ---------- */
 
 /* The whole pill is one button: click it and the reel of facts spins up and down */
