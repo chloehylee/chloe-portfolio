@@ -1020,6 +1020,858 @@ html.fit body {
   height: 200px;
 }
 
+/* ---------- doors between rooms ---------- */
+
+/* stepping into a room: it slides in from the side you walked towards and
+   fades up. The house runs my room · living room · studio, left to right. */
+.room__row.bedroom,
+.room__row.studio,
+.room__row.living.from-bedroom,
+.room__row.living.from-studio {
+  animation: room-in 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.room__row.bedroom,
+.room__row.living.from-studio {
+  --enter: -40px;
+}
+
+.room__row.studio,
+.room__row.living.from-bedroom {
+  --enter: 40px;
+}
+
+@keyframes room-in {
+  from {
+    opacity: 0;
+    transform: translateX(var(--enter));
+  }
+}
+
+/* a paper sign pinned to the wall, pointing to the other room */
+.room-sign {
+  position: absolute;
+  z-index: 2;
+  bottom: 120px;
+  padding: 6px 12px 7px;
+  border: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--display);
+  font-size: 18px;
+  font-style: italic;
+  white-space: nowrap;
+  box-shadow: 0 2px 5px rgba(var(--shadow), 0.22);
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.3, 1.4, 0.5, 1);
+}
+
+.room-sign--right {
+  right: 10px;
+  transform: rotate(-3deg);
+}
+
+.room-sign--left {
+  left: 10px;
+  transform: rotate(3deg);
+}
+
+/* in the living room the left sign hangs between the TV and the console */
+.room.is-fit .living .room-sign--left {
+  bottom: 190px;
+}
+
+/* a pin holding it up */
+.room-sign__pin {
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  margin-left: -4px;
+  border-radius: 50%;
+  background: #c96a3f;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+}
+
+.room-sign:hover,
+.room-sign:focus-visible {
+  transform: rotate(0deg) translateX(var(--nudge, 0));
+}
+
+.room-sign--right:hover {
+  --nudge: 4px;
+}
+
+.room-sign--left:hover {
+  --nudge: -4px;
+}
+
+.room-sign:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+/* the lock on my room */
+.lock {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  background: rgba(31, 43, 34, 0.45);
+  animation: fade-in 0.2s ease;
+}
+
+.lock__card {
+  position: relative;
+  width: min(360px, 90vw);
+  padding: 28px 28px 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+  background: var(--paper);
+  color: var(--paper-ink);
+  border-radius: 10px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.3);
+  animation: album-in 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.lock__card.is-wrong {
+  animation: lock-shake 0.4s ease;
+}
+
+@keyframes lock-shake {
+  20%,
+  60% {
+    transform: translateX(-6px);
+  }
+  40%,
+  80% {
+    transform: translateX(6px);
+  }
+}
+
+.lock__close {
+  position: absolute;
+  top: 6px;
+  right: 10px;
+  border: 0;
+  background: none;
+  color: var(--ink-soft);
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.lock__icon {
+  width: 26px;
+  height: 26px;
+  color: var(--ink);
+}
+
+.lock__title {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 30px;
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1;
+}
+
+.lock__text {
+  margin: 0;
+  font-family: var(--text);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+
+.lock__text a {
+  color: var(--pen);
+  font-weight: 600;
+}
+
+.lock__row {
+  display: flex;
+  gap: 6px;
+  width: 100%;
+  margin-top: 6px;
+}
+
+.lock__row input {
+  flex: 1;
+  min-width: 0;
+  padding: 9px 12px;
+  border: 1px solid rgba(47, 74, 54, 0.25);
+  border-radius: 6px;
+  background: #fff;
+  font-family: var(--text);
+  font-size: 14px;
+}
+
+.lock__row button {
+  padding: 0 14px;
+  border: 0;
+  border-radius: 6px;
+  background: var(--ink);
+  color: var(--trim);
+  font-family: var(--text);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.lock__row button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.lock__wrong {
+  margin: 0;
+  font-family: var(--text);
+  font-size: 12px;
+  color: #a8161b;
+}
+
+.lock__hint-btn {
+  border: 0;
+  background: none;
+  color: var(--ink-soft);
+  font-family: var(--text);
+  font-size: 12px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.lock__hint {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 17px;
+  font-style: italic;
+  color: var(--ink);
+}
+
+/* a casual hello under the subtitle in my room */
+.bedroom__aside {
+  margin: 2px 0 0;
+  font-family: var(--text);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ink-soft);
+}
+
+/* stacked (phones): the sign sits at the end of the room */
+.room:not(.is-fit) .room-sign {
+  position: static;
+  order: 99;
+  margin: 0 auto 24px;
+}
+
+/* ---------- my room ---------- */
+
+/* the left side reuses the living room's intro styles (.intro), so the
+   title and subtitle match "Chloe Lee" exactly */
+
+.bedroom__right {
+  flex: 999 1 560px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  padding-top: 72px;
+}
+
+/* little paper labels, like the b-sides tag */
+.tag {
+  padding: 1px 9px 2px;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--display);
+  font-size: 15px;
+  font-style: italic;
+  box-shadow: 0 1px 2px rgba(var(--shadow), 0.25);
+}
+
+/* notes from visitors, clipped to a line on the wall */
+.notes {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  padding-top: 6px;
+}
+
+.notes__line {
+  position: absolute;
+  left: -6px;
+  right: -6px;
+  top: 12px;
+  height: 2px;
+  border-radius: 1px;
+  background: #8e6a45;
+  opacity: 0.7;
+}
+
+.notes__cards {
+  position: relative;
+  display: flex;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.note {
+  position: relative;
+  display: block;
+  width: 100px;
+  min-height: 112px;
+  padding: 20px 10px 10px;
+  box-shadow: 0 3px 8px rgba(var(--shadow), 0.16);
+  transform-origin: 50% 0;
+  transition: rotate 0.4s cubic-bezier(0.3, 1.4, 0.5, 1);
+}
+
+.note:hover {
+  rotate: 0deg !important;
+}
+
+/* a little wooden peg holding each card on the line */
+.note__clip {
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  width: 8px;
+  height: 20px;
+  margin-left: -4px;
+  border-radius: 2px;
+  background: #c49a6c;
+  box-shadow: inset -2px 0 0 #a97c50;
+}
+
+.note__text {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 15px;
+  font-style: italic;
+  line-height: 1.2;
+  color: var(--paper-ink);
+  overflow-wrap: anywhere;
+}
+
+.note__name {
+  margin: 8px 0 0;
+  font-family: var(--text);
+  font-size: 11px;
+  color: var(--ink-soft);
+}
+
+.note__remove {
+  position: absolute;
+  right: 3px;
+  bottom: 3px;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--ink-soft);
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.note__remove:hover {
+  background: rgba(47, 74, 54, 0.12);
+}
+
+.note--add {
+  border: 1.5px dashed rgba(47, 74, 54, 0.4);
+  background: rgba(255, 251, 240, 0.5);
+  box-shadow: none;
+  color: var(--ink-soft);
+  font-family: var(--display);
+  font-size: 15px;
+  font-style: italic;
+  cursor: pointer;
+}
+
+.note--add:hover {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.notes__form {
+  position: absolute;
+  z-index: 6;
+  left: 0;
+  top: calc(100% + 10px);
+  width: 300px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: var(--paper);
+  box-shadow:
+    0 2px 6px rgba(var(--shadow), 0.14),
+    0 16px 32px rgba(var(--shadow), 0.2);
+  border-radius: 8px;
+}
+
+.notes__form textarea,
+.notes__form input {
+  border: 1px solid rgba(47, 74, 54, 0.22);
+  border-radius: 6px;
+  padding: 8px 10px;
+  background: #fff;
+  color: var(--paper-ink);
+  font-family: var(--text);
+  font-size: 14px;
+}
+
+.notes__form textarea {
+  height: 70px;
+  resize: none;
+}
+
+.notes__row {
+  display: flex;
+  gap: 6px;
+}
+
+.notes__row input {
+  flex: 1;
+  min-width: 0;
+}
+
+.notes__row button {
+  border: 0;
+  border-radius: 6px;
+  padding: 0 12px;
+  background: var(--ink);
+  color: var(--trim);
+  font-family: var(--text);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.notes__row button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.notes__row .notes__cancel {
+  background: none;
+  color: var(--ink-soft);
+}
+
+.notes__status {
+  margin: 8px 0 0;
+  font-family: var(--text);
+  font-size: 12px;
+  color: var(--ink-soft);
+}
+
+.notes__tag {
+  position: absolute;
+  right: 0;
+  top: -14px;
+  transform: rotate(2deg);
+}
+
+/* a book you can open */
+.book.is-readable {
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+}
+
+.book.is-readable:hover,
+.book.is-readable:focus-visible {
+  transform: translateY(-10px);
+}
+
+/* reading an essay */
+.reader {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  justify-content: center;
+  padding: 40px 16px;
+  overflow-y: auto;
+  background: rgba(31, 43, 34, 0.45);
+  animation: fade-in 0.2s ease;
+}
+
+.reader__page {
+  position: relative;
+  width: min(680px, 100%);
+  height: max-content;
+  padding: 48px 56px 56px;
+  background: var(--paper);
+  color: var(--paper-ink);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.3);
+  animation: album-in 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.reader__close {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  border: 0;
+  background: none;
+  color: var(--ink-soft);
+  font-size: 26px;
+  cursor: pointer;
+}
+
+.reader__title {
+  margin: 0;
+  font-family: var(--display);
+  font-size: 40px;
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.05;
+}
+
+.reader__meta {
+  margin: 12px 0 28px;
+  font-family: var(--text);
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+
+.reader .reader__note {
+  margin: -8px 0 28px;
+  padding: 12px 16px;
+  border-left: 3px solid #b0435b;
+  background: rgba(176, 67, 91, 0.06);
+  font-family: var(--display);
+  font-size: 19px;
+  font-style: italic;
+  line-height: 1.4;
+  color: var(--ink);
+}
+
+.reader h3 {
+  margin: 28px 0 8px;
+  font-family: var(--display);
+  font-size: 24px;
+  font-weight: 400;
+  color: var(--ink);
+}
+
+.reader p {
+  margin: 0 0 14px;
+  font-family: var(--text);
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.reader__refs p {
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  overflow-wrap: anywhere;
+}
+
+/* the scrapbook, open */
+.album {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  background: rgba(31, 43, 34, 0.45);
+  animation: fade-in 0.2s ease;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.album__book {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: min(720px, 92vw);
+  min-height: 380px;
+  padding: 28px 28px 54px;
+  gap: 0;
+  border-radius: 6px;
+  background: #8f3f22;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+  animation: album-in 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes album-in {
+  from {
+    transform: translateY(16px) scale(0.97);
+    opacity: 0;
+  }
+}
+
+.album__page {
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: #f4ebd6;
+}
+
+.album__page:first-child {
+  box-shadow: inset -12px 0 18px -14px rgba(0, 0, 0, 0.35);
+}
+
+.polaroid {
+  position: relative;
+  margin: 0;
+  width: 220px;
+  padding: 10px 10px 12px;
+  background: #fffbf0;
+  box-shadow: 0 4px 12px rgba(var(--shadow), 0.22);
+}
+
+.polaroid img,
+.polaroid__blank {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+
+.polaroid__blank {
+  display: grid;
+  place-items: center;
+  background: repeating-linear-gradient(-45deg, #e8dcc8 0 8px, #efe6d4 8px 16px);
+  color: var(--ink-soft);
+  font-family: var(--display);
+  font-size: 18px;
+  font-style: italic;
+}
+
+.polaroid figcaption {
+  margin-top: 10px;
+  text-align: center;
+  font-family: var(--display);
+  font-size: 16px;
+  font-style: italic;
+  color: var(--paper-ink);
+}
+
+.polaroid__tape {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  width: 70px;
+  height: 20px;
+  margin-left: -35px;
+  background: rgba(244, 235, 207, 0.85);
+  transform: rotate(-3deg);
+}
+
+.album__nav {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  color: var(--trim);
+  font-family: var(--text);
+  font-size: 13px;
+}
+
+.album__nav button,
+.album__close {
+  border: 0;
+  background: none;
+  color: var(--trim);
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.album__nav button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.album__close {
+  position: absolute;
+  top: 4px;
+  right: 10px;
+  font-size: 24px;
+}
+
+/* the bed sits on the floor like the loveseat does */
+.bed {
+  position: relative;
+  margin-top: auto;
+  margin-bottom: -62px;
+  width: 100%;
+  max-width: 440px;
+}
+
+.bed svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* the scrapbook lies flat on the quilt, spine facing out */
+.scrapbook {
+  position: absolute;
+  left: 42%;
+  /* its bottom edge rests on the top of the quilt (48% down the bed) */
+  top: calc(48.4% - 24px);
+  width: 128px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  border-radius: 2px;
+  background: #8f3f22;
+  box-shadow:
+    inset 0 3px 0 #a64d2c,
+    inset 0 -3px 0 #6f2f19,
+    0 2px 4px rgba(var(--shadow), 0.3);
+  color: var(--paper);
+  font-family: var(--display);
+  font-size: 14px;
+  font-style: italic;
+  line-height: 24px;
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.3, 1.4, 0.5, 1);
+}
+
+.scrapbook:hover,
+.scrapbook:focus-visible {
+  transform: translateY(-4px);
+}
+
+/* bookshelf: writing on top, research below */
+.bedroom__shelves {
+  display: flex;
+  flex-direction: column;
+  gap: 34px;
+  width: 360px;
+}
+
+.shelf {
+  position: relative;
+}
+
+.shelf__books {
+  display: flex;
+  align-items: flex-end;
+  gap: 5px;
+  margin: 0;
+  padding: 0 18px;
+  list-style: none;
+}
+
+.book {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  width: 26px;
+  padding-bottom: 10px;
+  border-radius: 2px 2px 0 0;
+  background: var(--book);
+  box-shadow: inset -2px 0 0 rgba(0, 0, 0, 0.12);
+  color: #fffbf0;
+  transition: transform 0.28s cubic-bezier(0.3, 1.4, 0.5, 1);
+}
+
+.book:hover {
+  transform: translateY(-8px);
+}
+
+/* not written yet: paler, with a dashed outline */
+.book.is-soon {
+  background: color-mix(in srgb, var(--book) 45%, var(--wall));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--book) 70%, transparent);
+  color: var(--ink);
+}
+
+.book__title {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: var(--text);
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.shelf__board {
+  height: 12px;
+  border-radius: 2px;
+  background: #a97c50;
+  box-shadow:
+    inset 0 3px 0 #c49a6c,
+    0 6px 12px rgba(var(--shadow), 0.18);
+}
+
+.shelf__tag {
+  position: absolute;
+  right: 12px;
+  bottom: -14px;
+  transform: rotate(2deg);
+}
+
+.desk {
+  display: block;
+  width: 100%;
+  max-width: 460px;
+  height: auto;
+  margin-top: auto;
+  /* stands at the base of the wall, clear of the contact line on the floor */
+  margin-bottom: -4px;
+}
+
+.desk__glow {
+  transition: opacity 0.4s ease;
+}
+
+.desk__glow {
+  opacity: 0.6;
+}
+
+.desk:hover .desk__glow {
+  opacity: 1;
+}
+
+/* the fit layout keeps the bedroom the same width as the living room */
+.room.is-fit .room__row.bedroom {
+  flex-wrap: nowrap;
+}
+
+.room:not(.is-fit) .bedroom__left,
+.room:not(.is-fit) .bedroom__right {
+  flex: none;
+  width: 100%;
+  align-items: center;
+}
+
+.room:not(.is-fit) .room__row.bedroom {
+  flex-direction: column;
+  align-items: center;
+}
+
+.room:not(.is-fit) .bed,
+.room:not(.is-fit) .desk {
+  margin-bottom: 0;
+}
+
 /* ---------- liner notes: the back of the sleeve ---------- */
 
 .liner {
