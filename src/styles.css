@@ -1872,6 +1872,451 @@ html.fit body {
   margin-bottom: 0;
 }
 
+/* ---------- studio ---------- */
+
+/* the left side reuses the living room's intro styles, so "Studio" matches
+   "Chloe Lee" exactly; the project card sits under it */
+.studio__card {
+  flex: none;
+  align-self: flex-start;
+  width: 100%;
+  max-width: 400px;
+  min-width: 0;
+}
+
+.studio__title {
+  animation: track-in 0.35s ease;
+}
+
+.studio__link {
+  margin-top: 10px;
+  font-family: var(--text);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--pen);
+}
+
+.studio__right {
+  flex: 999 1 640px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  padding-top: 72px;
+}
+
+.pegboard {
+  width: 560px;
+  max-width: 100%;
+  padding: 14px 20px;
+  border-radius: 4px;
+  background-color: #d9c19c;
+  background-image: radial-gradient(circle, #b9a07a 2.4px, transparent 2.6px);
+  background-size: 22px 22px;
+  background-position: 11px 11px;
+  box-shadow:
+    inset 0 0 0 6px #c9ad84,
+    0 8px 18px rgba(var(--shadow), 0.16);
+}
+
+.pegboard svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.bench {
+  position: relative;
+  width: 640px;
+  margin-top: auto;
+  /* stands at the base of the wall, clear of the contact line on the floor */
+  margin-bottom: -4px;
+}
+
+.bench__items {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-evenly;
+  margin: 0;
+  padding: 0 12px;
+  list-style: none;
+}
+
+.bench__items li {
+  display: flex;
+}
+
+.bench__frame {
+  display: block;
+  width: 100%;
+  height: 120px;
+}
+
+/* every object on the bench is a button */
+.thing {
+  position: relative;
+  display: block;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  transition: transform 0.28s cubic-bezier(0.3, 1.4, 0.5, 1);
+}
+
+.thing svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.thing:hover,
+.thing:focus-visible {
+  transform: translateY(-6px);
+}
+
+.thing:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 4px;
+}
+
+/* the one you're reading about gets a little paper underline on the bench */
+.thing::after {
+  content: '';
+  position: absolute;
+  left: 20%;
+  right: 20%;
+  bottom: -9px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--thing);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.thing.is-active::after {
+  opacity: 1;
+}
+
+/* highnotes: the mic, with a lyric scrolling past on hover */
+.mic {
+  width: 90px;
+  height: 170px;
+}
+
+.mic__lyric {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  width: 150px;
+  margin-left: -75px;
+  padding: 3px 0;
+  overflow: hidden;
+  background: var(--paper);
+  box-shadow: 0 1px 2px rgba(var(--shadow), 0.25);
+  font-family: var(--display);
+  font-size: 14px;
+  font-style: italic;
+  white-space: nowrap;
+  color: var(--ink);
+  opacity: 0;
+  transform: translateY(4px);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+  pointer-events: none;
+}
+
+.mic__lyric span {
+  display: inline-block;
+  padding-left: 100%;
+}
+
+.mic:hover .mic__lyric,
+.mic:focus-visible .mic__lyric {
+  opacity: 1;
+  transform: none;
+}
+
+.mic:hover .mic__lyric span,
+.mic:focus-visible .mic__lyric span {
+  animation: lyric 7s linear infinite;
+}
+
+@keyframes lyric {
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+/* heart2heart: a phone on a stand; on hover a heart floats up out of the chat */
+.phone {
+  width: 80px;
+  height: 124px;
+}
+
+.phone .phone__heart {
+  position: absolute;
+  left: 30px;
+  top: 58px;
+  width: 20px;
+  height: 18px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.phone:hover .phone__heart,
+.phone:focus-visible .phone__heart {
+  animation: heart-up 1.6s ease-out infinite;
+}
+
+@keyframes heart-up {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scale(0.6);
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-80px) scale(1.2);
+  }
+}
+
+/* perfume: three bottles; on hover their notes drift up and overlap */
+.perfumes {
+  width: 150px;
+  height: 120px;
+}
+
+.scent {
+  position: absolute;
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  mix-blend-mode: multiply;
+  opacity: 0;
+  transition:
+    opacity 0.5s ease,
+    transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+  pointer-events: none;
+}
+
+.scent--a {
+  left: -8px;
+  top: 0;
+  background: #e3a6b4;
+}
+
+.scent--b {
+  left: 44px;
+  top: 10px;
+  background: #e8c27a;
+}
+
+.scent--c {
+  left: 96px;
+  top: 14px;
+  background: #b9a6d6;
+}
+
+.perfumes:hover .scent,
+.perfumes:focus-visible .scent {
+  opacity: 0.75;
+}
+
+.perfumes:hover .scent--a,
+.perfumes:focus-visible .scent--a {
+  transform: translate(26px, -66px);
+}
+
+.perfumes:hover .scent--b,
+.perfumes:focus-visible .scent--b {
+  transform: translate(0, -96px);
+}
+
+.perfumes:hover .scent--c,
+.perfumes:focus-visible .scent--c {
+  transform: translate(-30px, -70px);
+}
+
+/* days better tmr: a desk calendar; on hover today flips over to tomorrow */
+.cal-wrap {
+  width: 112px;
+  height: 120px;
+}
+
+.cal {
+  position: absolute;
+  inset: 0;
+  perspective: 400px;
+}
+
+.cal__page {
+  position: absolute;
+  left: 6px;
+  right: 6px;
+  top: 12px;
+  bottom: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  background: var(--paper);
+  border-top: 14px solid var(--thing);
+  box-shadow: 0 2px 4px rgba(var(--shadow), 0.2);
+  color: var(--ink);
+  transform-origin: top center;
+  transition: transform 0.55s cubic-bezier(0.3, 0.9, 0.3, 1);
+}
+
+/* tomorrow's page peeks up from behind */
+.cal__page--tmr {
+  top: 6px;
+  border-top-color: color-mix(in srgb, var(--thing) 70%, #fffbf0);
+}
+
+.cal__day {
+  font-family: var(--text);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.cal__date {
+  font-family: var(--display);
+  font-size: 40px;
+  line-height: 0.95;
+}
+
+.cal__word {
+  font-family: var(--display);
+  font-size: 14px;
+  font-style: italic;
+  color: var(--ink-soft);
+}
+
+.cal-wrap:hover .cal__page--today,
+.cal-wrap:focus-visible .cal__page--today {
+  transform: rotateX(-150deg);
+  opacity: 0;
+  transition:
+    transform 0.55s cubic-bezier(0.3, 0.9, 0.3, 1),
+    opacity 0.2s ease 0.25s;
+}
+
+.cal__rings {
+  position: absolute;
+  top: 2px;
+  left: 24px;
+  right: 24px;
+  height: 18px;
+  background: radial-gradient(circle at 50% 50%, #2f4a36 3px, transparent 3.5px) 0 0 / 16px 18px repeat-x;
+}
+
+.cal__stand {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 14px;
+  border-radius: 2px;
+  background: #2f4a36;
+}
+
+/* coming soon: a breadboard under a cloth; hover peeks underneath */
+.hw {
+  width: 130px;
+  height: 90px;
+}
+
+.hw__board,
+.hw__cloth {
+  position: absolute;
+  inset: 0;
+}
+
+.hw__cloth {
+  transform-origin: 90% 100%;
+  transition: transform 0.4s cubic-bezier(0.3, 1.2, 0.5, 1);
+}
+
+.hw:hover .hw__cloth,
+.hw:focus-visible .hw__cloth {
+  transform: translate(26px, -44px) rotate(14deg);
+}
+
+.hw:hover .hw__led,
+.hw:focus-visible .hw__led {
+  animation: blink 0.9s steps(1) infinite;
+}
+
+@keyframes blink {
+  50% {
+    fill: #ffb199;
+  }
+}
+
+.hw__tag {
+  position: absolute;
+  right: -18px;
+  bottom: 14px;
+  font-size: 13px;
+  white-space: nowrap;
+  transform: rotate(-6deg);
+}
+
+/* the card always reads top to bottom, whatever the layout */
+.room .liner.studio__card .liner__inner {
+  display: flex;
+}
+
+/* the fit layout keeps the studio the same width as the living room */
+.room.is-fit .room__row.studio {
+  flex-wrap: nowrap;
+}
+
+.room:not(.is-fit) .room__row.studio {
+  flex-direction: column;
+  align-items: center;
+}
+
+.room:not(.is-fit) .studio__left,
+.room:not(.is-fit) .studio__right {
+  flex: none;
+  width: 100%;
+  align-items: center;
+}
+
+.room:not(.is-fit) .studio__right {
+  padding-top: 8px;
+}
+
+.room:not(.is-fit) .bench {
+  margin-bottom: 0;
+}
+
+/* narrow screens: the bench and pegboard shrink as one piece */
+@media (max-width: 720px) {
+  .room:not(.is-fit) .bench,
+  .room:not(.is-fit) .pegboard {
+    zoom: 0.8;
+  }
+}
+
+@media (max-width: 560px) {
+  .room:not(.is-fit) .bench,
+  .room:not(.is-fit) .pegboard {
+    zoom: 0.56;
+  }
+}
+
 /* ---------- liner notes: the back of the sleeve ---------- */
 
 .liner {
@@ -2386,4 +2831,3 @@ html.fit body {
 .room:not(.is-fit) .living .room-sign--right {
   right: 16px;
 }
-
